@@ -4,16 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"math/rand"
 	"os"
-	"time"
 )
-
-var random = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 func main() {
 	r := bufio.NewReader(os.Stdin)
-	w := bufio.NewWriter(os.Stdout)
+	w := NewWriter(os.Stdout)
 
 	for {
 		b, err := r.ReadByte()
@@ -23,14 +19,10 @@ func main() {
 		if err != nil {
 			exit(err)
 		}
-		w.WriteByte(corrupt(b))
-		w.Flush()
+		if err := w.WriteByte(b); err != nil {
+			exit(err)
+		}
 	}
-}
-
-func corrupt(b byte) byte {
-	pos := uint(random.Intn(8))
-	return b ^ 1<<pos
 }
 
 func exit(err error) {
