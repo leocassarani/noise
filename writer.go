@@ -6,25 +6,32 @@ import (
 	"time"
 )
 
-func NewWriter(w io.Writer) *Writer {
+func NewWriter(out io.Writer, errorRate float32) *Writer {
 	return &Writer{
-		out:    w,
-		random: rand.New(rand.NewSource(time.Now().UnixNano())),
+		out:       out,
+		rng:       rand.New(rand.NewSource(time.Now().UnixNano())),
+		errorRate: errorRate,
 	}
 }
 
 type Writer struct {
-	out    io.Writer
-	random *rand.Rand
+	errorRate float32
+	out       io.Writer
+	rng       rng
 }
 
 func (w *Writer) WriteByte(b byte) error {
-	bytes := []byte{w.corrupt(b)}
-	_, err := w.out.Write(bytes)
+	for i := uint(0); i < 8; i++ {
+		if w.rng.Float32() < w.errorRate {
+			b ^= 1 << i
+		}
+	}
+
+	_, err := w.out.Write([]byte{b})
 	return err
 }
 
-func (w *Writer) corrupt(b byte) byte {
-	pos := uint(w.random.Intn(8))
-	return b ^ 1<<pos
+// RNG = Random Number Generator
+type rng interface {
+	Float32() float32
 }

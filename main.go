@@ -9,7 +9,7 @@ import (
 
 func main() {
 	r := bufio.NewReader(os.Stdin)
-	w := NewWriter(os.Stdout)
+	w := NewWriter(os.Stdout, 0.25)
 
 	for {
 		b, err := r.ReadByte()
