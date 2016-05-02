@@ -10,7 +10,7 @@ func TestWriter_some(t *testing.T) {
 
 	w := NewWriter(&buf, 0.25)
 	w.rng = &testRNG{
-		seq: []float32{0.2, 0.5, 1, 0},
+		seq: []float64{0.2, 0.5, 1, 0},
 	}
 
 	if err := w.WriteByte(0xCA); err != nil {
@@ -77,11 +77,11 @@ func TestWriter_none(t *testing.T) {
 }
 
 type testRNG struct {
-	seq   []float32
+	seq   []float64
 	index int
 }
 
-func (rng *testRNG) Float32() float32 {
+func (rng *testRNG) Float64() float64 {
 	if len(rng.seq) == 0 {
 		return 0
 	}
