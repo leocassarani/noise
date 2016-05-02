@@ -20,6 +20,17 @@ type Writer struct {
 	rng       rng
 }
 
+func (w *Writer) Write(p []byte) (n int, err error) {
+	for _, b := range p {
+		err = w.WriteByte(b)
+		if err != nil {
+			break
+		}
+		n++
+	}
+	return n, err
+}
+
 func (w *Writer) WriteByte(b byte) error {
 	for i := uint(0); i < 8; i++ {
 		if w.rng.Float32() < w.errorRate {
