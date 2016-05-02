@@ -1,4 +1,4 @@
-# Noisy
+# Noisy [![Build Status](https://travis-ci.org/leocassarani/noisy.svg?branch=master)](https://travis-ci.org/leocassarani/noisy)
 
 Noisy is a command-line utility that injects a customisable amount of
 random noise into a stream of bytes coming from standard input.
